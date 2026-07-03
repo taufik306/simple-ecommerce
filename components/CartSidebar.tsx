@@ -30,8 +30,12 @@ export default function CartSidebar({ settings }: { settings?: any }) {
   const handleCheckout = () => {
     const link = generateWhatsAppLink(items, whatsappNumber, currencySymbol, pricingFormat)
     // Basic event tracking for checkout
-    if (typeof window !== 'undefined' && (window as any).va) {
-      ;(window as any).va('event', { name: 'checkout_whatsapp_clicked' })
+    try {
+      if (typeof window !== 'undefined' && (window as any).va) {
+        ;(window as any).va('event', 'checkout_whatsapp_clicked')
+      }
+    } catch (e) {
+      console.error('Analytics error', e)
     }
     window.open(link, '_blank')
   }

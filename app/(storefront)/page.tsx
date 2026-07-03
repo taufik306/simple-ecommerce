@@ -21,6 +21,7 @@ export default async function Home() {
   }
 
   const currencySymbol = settings?.currencySymbol || '$'
+  const pricingFormat = settings?.pricingFormat
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,6 +39,7 @@ export default async function Home() {
                 key={product._id} 
                 product={product} 
                 currencySymbol={currencySymbol} 
+                pricingFormat={pricingFormat}
                 priority={index < 4}
               />
             ))}

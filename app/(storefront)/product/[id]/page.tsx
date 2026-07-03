@@ -4,6 +4,7 @@ import { client } from '../../../../sanity/lib/client'
 import { getProductByIdQuery, getStoreSettingsQuery } from '../../../../sanity/lib/queries'
 import { urlForImage } from '../../../../sanity/lib/image'
 import AddToCartButton from '../../../../components/AddToCartButton'
+import { formatPrice } from '../../../../utils/price'
 
 export const revalidate = 60 // Revalidate periodically
 
@@ -31,6 +32,7 @@ export default async function ProductPage({ params }: Props) {
   }
 
   const currencySymbol = settings?.currencySymbol || '$'
+  const pricingFormat = settings?.pricingFormat
 
   return (
     <div className="bg-white">
@@ -63,7 +65,7 @@ export default async function ProductPage({ params }: Props) {
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
-                {currencySymbol}{product.price.toFixed(2)}
+                {formatPrice(product.price, currencySymbol, pricingFormat)}
               </p>
             </div>
             

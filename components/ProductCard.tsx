@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react'
 import { urlForImage } from '../sanity/lib/image'
 import { useCartStore } from '../store/cartStore'
+import { formatPrice } from '../utils/price'
 
 interface ProductCardProps {
   product: {
@@ -15,10 +16,11 @@ interface ProductCardProps {
     mainImage: any
   }
   currencySymbol: string
+  pricingFormat?: any
   priority?: boolean
 }
 
-export default function ProductCard({ product, currencySymbol, priority = false }: ProductCardProps) {
+export default function ProductCard({ product, currencySymbol, pricingFormat, priority = false }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -63,7 +65,7 @@ export default function ProductCard({ product, currencySymbol, priority = false 
           <p className="mt-1 text-sm text-gray-500">SKU: {product.sku}</p>
           <div className="mt-3 flex items-center justify-between">
             <p className="text-lg font-bold text-gray-900">
-              {currencySymbol}{product.price.toFixed(2)}
+              {formatPrice(product.price, currencySymbol, pricingFormat)}
             </p>
           </div>
         </div>

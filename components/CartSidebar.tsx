@@ -5,8 +5,9 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useCartStore } from '../store/cartStore'
 import { generateWhatsAppLink } from '../utils/whatsapp'
+import { formatPrice } from '../utils/price'
 
-export default function CartSidebar() {
+export default function CartSidebar({ settings }: { settings?: any }) {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { items, removeItem, updateQuantity } = useCartStore()
@@ -21,9 +22,9 @@ export default function CartSidebar() {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const itemCount = items.reduce((count, item) => count + item.quantity, 0)
 
-  // Hardcoded for now, would ideally fetch from global context or pass as props
-  const currencySymbol = '$'
-  const whatsappNumber = '1234567890'
+  const currencySymbol = settings?.currencySymbol || '$'
+  const whatsappNumber = settings?.whatsappNumber || '1234567890'
+  const pricingFormat = settings?.pricingFormat
 
   const handleCheckout = () => {
     const link = generateWhatsAppLink(items, whatsappNumber, currencySymbol)
@@ -97,8 +98,7 @@ export default function CartSidebar() {
                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                   <h3>{item.name}</h3>
                                   <p className="ml-4">
-                                    {currencySymbol}
-                                    {(item.price * item.quantity).toFixed(2)}
+                                    {formatPrice(item.price * item.quantity, currencySymbol, pricingFormat)}
                                   </p>
                                 </div>
                                 <p className="mt-1 text-sm text-gray-500">
@@ -154,8 +154,7 @@ export default function CartSidebar() {
                 <div className="flex justify-between text-base font-medium text-gray-900">
                   <p>Subtotal</p>
                   <p>
-                    {currencySymbol}
-                    {total.toFixed(2)}
+                    {formatPrice(total, currencySymbol, pricingFormat)}
                   </p>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">

@@ -27,9 +27,7 @@ export default function CartSidebar({ settings }: { settings?: any }) {
   const whatsappNumber = settings?.whatsappNumber || '1234567890'
   const pricingFormat = settings?.pricingFormat
 
-  const handleCheckout = () => {
-    const link = generateWhatsAppLink(items, whatsappNumber, currencySymbol, pricingFormat)
-    // Basic event tracking for checkout
+  const trackCheckout = () => {
     try {
       if (typeof window !== 'undefined' && (window as any).va) {
         ;(window as any).va('event', 'checkout_whatsapp_clicked')
@@ -37,7 +35,6 @@ export default function CartSidebar({ settings }: { settings?: any }) {
     } catch (e) {
       console.error('Analytics error', e)
     }
-    window.open(link, '_blank')
   }
 
   return (
@@ -171,13 +168,24 @@ export default function CartSidebar({ settings }: { settings?: any }) {
                       Shipping and taxes calculated via WhatsApp.
                     </p>
                     <div className="mt-6">
-                      <button
-                        onClick={handleCheckout}
-                        disabled={items.length === 0}
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                      >
-                        Checkout via WhatsApp
-                      </button>
+                      {items.length === 0 ? (
+                        <button
+                          disabled
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-gray-400 px-6 py-3 text-base font-medium text-white shadow-sm cursor-not-allowed"
+                        >
+                          Checkout via WhatsApp
+                        </button>
+                      ) : (
+                        <a
+                          href={generateWhatsAppLink(items, whatsappNumber, currencySymbol, pricingFormat)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={trackCheckout}
+                          className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700"
+                        >
+                          Checkout via WhatsApp
+                        </a>
+                      )}
                     </div>
                     <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                       <p>

@@ -9,16 +9,18 @@ import { formatPrice } from '../../../../utils/price'
 export const revalidate = 60 // Revalidate periodically
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function ProductPage({ params }: Props) {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   let product = null, settings = null
   try {
     const results = await Promise.all([
-      client.fetch(getProductByIdQuery, { id: params.id }),
+      client.fetch(getProductByIdQuery, { id }),
       client.fetch(getStoreSettingsQuery),
     ])
     product = results[0]

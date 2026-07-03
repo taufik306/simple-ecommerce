@@ -13,6 +13,7 @@ interface ProductCardProps {
     name: string
     sku: string
     price: number
+    description?: string
     mainImage: any
   }
   currencySymbol: string
@@ -62,7 +63,9 @@ export default function ProductCard({ product, currencySymbol, pricingFormat, pr
           <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
             {product.name}
           </h3>
-          <p className="mt-1 text-sm text-gray-500">SKU: {product.sku}</p>
+          <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+            {product.description || 'No description available.'}
+          </p>
           <div className="mt-3 flex items-center justify-between">
             <p className="text-lg font-bold text-gray-900">
               {formatPrice(product.price, currencySymbol, pricingFormat)}

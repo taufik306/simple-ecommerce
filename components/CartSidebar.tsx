@@ -28,7 +28,7 @@ export default function CartSidebar({ settings }: { settings?: any }) {
   const pricingFormat = settings?.pricingFormat
 
   const handleCheckout = () => {
-    const link = generateWhatsAppLink(items, whatsappNumber, currencySymbol)
+    const link = generateWhatsAppLink(items, whatsappNumber, currencySymbol, pricingFormat)
     // Basic event tracking for checkout
     if (typeof window !== 'undefined' && (window as any).va) {
       ;(window as any).va('event', { name: 'checkout_whatsapp_clicked' })

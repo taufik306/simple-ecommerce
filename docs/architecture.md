@@ -48,9 +48,9 @@ The checkout engine is a purely functional utility that transforms the client-si
 ### Process Flow
 1. User initiates checkout from the `CartSidebar` component.
 2. The system retrieves the current `CartState` (array of `CartItem` objects).
-3. The `generateWhatsAppLink(items, phoneNumber, currencySymbol)` utility executes:
+3. The `generateWhatsAppLink(items, phoneNumber, currencySymbol, pricingFormat)` utility executes:
    - Iterates through the cart items to calculate line totals.
    - Computes the grand total.
-   - Formats a human-readable text string summarizing the order.
+   - Formats a human-readable text string summarizing the order, formatting all currency displays using the global `pricingFormat` rules (decimals, thousand separators, symbol position).
    - Encodes the string using `encodeURIComponent`.
 4. The user is redirected to `https://wa.me/{phoneNumber}?text={encodedString}`.
